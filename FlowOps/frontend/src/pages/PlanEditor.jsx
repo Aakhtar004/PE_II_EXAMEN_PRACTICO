@@ -202,6 +202,13 @@ const PlanEditor = () => {
       icon: BarChart3,
       component: null, // Implementación a futuro
       disabled: true
+    },
+    {
+      id: 'users',
+      title: 'Compartir / Usuarios',
+      path: `/plan/${planId}/usuarios`,
+      icon: Users,
+      component: null
     }
   ]
 
@@ -355,7 +362,7 @@ const PlanEditor = () => {
       {/* Active Tab Content */}
       <div className="space-y-8">
         {activeTab === 'users' ? (
-          <UsersManager />
+          <UsersManager planId={planId} />
         ) : ActiveComponent ? (
           <ActiveComponent
             planId={planId}

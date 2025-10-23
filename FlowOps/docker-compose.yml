@@ -10,6 +10,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
       - "5432:5432"
     networks:
@@ -52,7 +53,7 @@ services:
       target: development
     container_name: pyflowops_frontend
     environment:
-      VITE_API_URL: http://backend:8000
+      VITE_API_URL: http://127.0.0.1:8000
       VITE_APP_TITLE: ${VITE_APP_TITLE}
     ports:
       - "3000:3000"
