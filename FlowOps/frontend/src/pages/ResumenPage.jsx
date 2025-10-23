@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Download, Building2, Calendar, Users, Target, TrendingUp } from 'lucide-react'
-import { usePlan, useCompanyIdentity, useStrategicAnalysis, useStrategies } from '../hooks/useApi'
+import { usePlan, useCompanyIdentity, useStrategicAnalysis, useStrategies, useAnalysisTools } from '../hooks/useApi'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import { useRef } from 'react'
 import { exportElementToPdf } from '../utils/exportPdf'
@@ -11,10 +11,11 @@ const ResumenPage = () => {
   const { identity, isLoading: identityLoading } = useCompanyIdentity(planId)
   const { analysis, isLoading: analysisLoading } = useStrategicAnalysis(planId)
   const { strategies, isLoading: strategiesLoading } = useStrategies(planId)
+  const { tools, isLoading: toolsLoading } = useAnalysisTools(planId)
 
   const resumenRef = useRef(null)
 
-  const isLoading = planLoading || identityLoading || analysisLoading || strategiesLoading
+  const isLoading = planLoading || identityLoading || analysisLoading || strategiesLoading || toolsLoading
 
   if (isLoading) {
     return (
@@ -58,6 +59,16 @@ const ResumenPage = () => {
       console.error('Error exporting PDF:', e)
     }
   }
+
+  // Fusionar fortalezas/debilidades del FODA y de Cadena de Valor
+  const mergedStrengths = [
+    ...(analysis?.internal_strengths || []),
+    ...(tools?.value_chain_support?.strengths || [])
+  ]
+  const mergedWeaknesses = [
+    ...(analysis?.internal_weaknesses || []),
+    ...(tools?.value_chain_support?.weaknesses || [])
+  ]
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -238,11 +249,11 @@ const ResumenPage = () => {
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Análisis FODA</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {analysis.internal_strengths && analysis.internal_strengths.length > 0 && (
+              {mergedStrengths.length > 0 && (
                 <div className="border-l-4 border-green-500 pl-4">
                   <h3 className="text-lg font-semibold text-green-700 mb-3">Fortalezas</h3>
                   <ul className="space-y-2">
-                    {analysis.internal_strengths.map((strength, index) => (
+                    {mergedStrengths.map((strength, index) => (
                       <li key={index} className="flex items-start">
                         <span className="text-green-500 mr-2 mt-1">✓</span>
                         <span className="text-gray-700 text-sm">{strength}</span>
@@ -264,11 +275,11 @@ const ResumenPage = () => {
                   </ul>
                 </div>
               )}
-              {analysis.internal_weaknesses && analysis.internal_weaknesses.length > 0 && (
+              {mergedWeaknesses.length > 0 && (
                 <div className="border-l-4 border-orange-500 pl-4">
                   <h3 className="text-lg font-semibold text-orange-700 mb-3">Debilidades</h3>
                   <ul className="space-y-2">
-                    {analysis.internal_weaknesses.map((weakness, index) => (
+                    {mergedWeaknesses.map((weakness, index) => (
                       <li key={index} className="flex items-start">
                         <span className="text-orange-500 mr-2 mt-1">⚠</span>
                         <span className="text-gray-700 text-sm">{weakness}</span>
