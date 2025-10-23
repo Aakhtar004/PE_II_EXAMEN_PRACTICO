@@ -1,0 +1,96 @@
+# -------------------------------------------------------------------
+# EXCLUSIÓN CRÍTICA PARA ELIMINAR ADVERTENCIAS DE SALTOS DE LÍNEA
+# -------------------------------------------------------------------
+
+# ¡CRÍTICO! Directorio de dependencias de Node (Frontend y Backend).
+# Ignorar esto elimina las advertencias sobre LF/CRLF en los miles de archivos de paquetes.
+node_modules/
+
+# -------------------------------------------------------------------
+# EXCLUSIONES GLOBALES COMUNES
+# -------------------------------------------------------------------
+
+# Archivos de bitácora (logs) y temporales
+*.log
+*.tmp
+*.bak
+*.swp
+out/
+temp/
+
+# Archivos del Sistema Operativo (OS)
+.DS_Store
+Thumbs.db
+
+# -------------------------------------------------------------------
+# EXCLUSIONES DE NODE.JS (Backend)
+# -------------------------------------------------------------------
+
+# Directorios de compilación y salida
+/dist
+/build
+/coverage
+/out
+
+# Archivos de instalación y errores de NPM/Yarn
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+
+# -------------------------------------------------------------------
+# EXCLUSIONES DE REACT / FRONTEND
+# -------------------------------------------------------------------
+
+# Salida de compilación de React (la mayoría de las herramientas usan 'build')
+/frontend/build
+/frontend/dist
+.cache
+
+# -------------------------------------------------------------------
+# EXCLUSIONES DE VARIABLES DE ENTORNO (CRÍTICO DE SEGURIDAD)
+# -------------------------------------------------------------------
+
+# Archivos con credenciales, claves secretas y configuraciones sensibles
+# para Node/PostgreSQL. ¡NUNCA DEBEN SUBIRSE A GIT!
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Archivos de entorno en el frontend si estuvieran separados
+/frontend/.env*
+/backend/.env*
+
+# -------------------------------------------------------------------
+# EXCLUSIONES DE DOCKER Y DATOS DE BASE DE DATOS (PostgreSQL)
+# -------------------------------------------------------------------
+
+# Archivos binarios de Docker
+*.swp
+*.o
+*.a
+
+# Volúmenes de datos locales o archivos de DB (¡Proteger datos de Postgre!)
+# Esto evita que los datos de la base de datos local se rastreen.
+/data/
+/volumes/
+db.sqlite
+*.sqlite3
+
+# -------------------------------------------------------------------
+# EXCLUSIONES DE EDITOR/IDE
+# -------------------------------------------------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+```eof
+
+### Recomendación Adicional para Resolver el *Warning*
+
+Aunque ignorar `node_modules/` resuelve la advertencia para ese directorio, si sigues viendo la advertencia de `LF` a `CRLF` en tus propios archivos de código fuente, te sugiero ejecutar este comando para configurar Git globalmente o por proyecto:
+
+```bash
+git config --global core.autocrlf true
